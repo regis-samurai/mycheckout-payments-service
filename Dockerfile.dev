@@ -1,0 +1,19 @@
+FROM node:14-alpine AS development
+# Set node env to prod
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
+
+# Specify our working directory, this is in our container/in our image
+WORKDIR /kuikpay/src
+
+# Copy the package.jsons from host to container
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+
+# Here we install all the deps
+RUN npm install
+
+# Bundle app source / copy all other files
+COPY . .
+
+CMD ["npm", "run", "start:dev"]
